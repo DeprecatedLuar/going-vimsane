@@ -1,0 +1,17 @@
+# Binaries (files with no extension)
+going-vimsane
+*
+!*.*
+
+# Common build artifacts
+*.o
+*.a
+*.so
+*.exe
+
+# Go build cache
+go.sum
+
+# AI assistant context
+CLAUDE.md
+
