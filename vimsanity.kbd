@@ -100,7 +100,7 @@
   yy (macro home S-end C-c left (on-press tap-vkey vimk))
 
   ;; G operations (execute + return to vim-normal)
-  gg C-home
+  gg (macro C-home (on-press tap-vkey vimk))
 
   ;; Escape from ops layers
   ops-esc (layer-switch vim-normal)
@@ -121,7 +121,7 @@
 )
 
 (deflayer vim-normal
-  esc  XX   1    2    3    XX   5    6    7    8    9    0    XX   XX   bspc
+  @def XX   1    2    3    XX   5    6    7    8    9    0    XX   XX   bspc
   XX   XX   C-right XX   XX   XX   @y  C-z  @insert-exit XX   C-v  [    ]    XX
   @pac XX   XX   @d  XX   @g   left down up right XX   '    ret
   @vsft @intl-double-ctrl XX   del  XX   @vis C-left   C-g  XX   XX   XX   @fnd  @vsft

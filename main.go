@@ -21,17 +21,17 @@ func getColorForLayer(layer string) Color {
 	case "default":
 		return Blue
 	case "vim-normal":
-		return Green
+		return Cyan
 	case "visual-mode":
 		return Magenta
 	case "vim-shifted":
-		return Red
+		return Green
 	case "delete-ops":
 		return Red
 	case "yank-ops":
 		return Yellow
 	case "g-ops":
-		return Cyan
+		return Green
 	case "meta-layer":
 		return Purple
 	case "escape":
