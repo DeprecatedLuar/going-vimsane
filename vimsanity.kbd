@@ -6,7 +6,7 @@
 
 ;; ============ SOURCE ============
 (defsrc
-  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  esc  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
   caps a    s    d    f    g    h    j    k    l    ;    '    ret
   lsft 102d z    x    c    v    b    n    m    ,    .    /    rsft
@@ -113,7 +113,7 @@
 
 ;; ============ LAYERS ============
 (deflayer default
-  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  esc  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
   @cap @a^  @s^  @d^  @f^  g    h    @j^  @k^  @l^  ;    '    ret
   lsft @intl-double-ctrl z    x    c    v    b    n    m    ,    .    /    rsft
@@ -121,7 +121,7 @@
 )
 
 (deflayer vim-normal
-  XX   1    2    3    XX   5    6    7    8    9    0    XX   XX   bspc
+  esc  XX   1    2    3    XX   5    6    7    8    9    0    XX   XX   bspc
   XX   XX   C-right XX   XX   XX   @y  C-z  @insert-exit XX   C-v  [    ]    XX
   @pac XX   XX   @d  XX   @g   left down up right XX   '    ret
   @vsft @intl-double-ctrl XX   del  XX   @vis C-left   C-g  XX   XX   XX   @fnd  @vsft
@@ -129,7 +129,7 @@
 )
 
 (deflayer vim-shifted
-  XX   XX   XX   XX   end  XX   XX   XX   XX   XX   XX   XX   XX   XX
+  @ops-esc XX   XX   XX   XX   end  XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   @D   XX   C-end   XX   XX   XX   XX   XX   XX   XX
   _    XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   _
@@ -137,7 +137,7 @@
 )
 
 (deflayer visual-mode
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @vdel
+  @vexit XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @vdel
   XX   XX   XX   XX   XX   XX   @vcp  XX   XX   XX   XX   XX   XX   XX
   @vcaps XX   XX  @vcut XX   XX   S-left S-down S-up S-right XX   XX   ret
   XX   XX   XX   @vdel XX   @vexit XX   XX   XX   XX   XX   XX   XX
@@ -145,7 +145,7 @@
 )
 
 (deflayer escape
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  @def _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   @def _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _
@@ -153,7 +153,7 @@
 )
 
 (deflayer meta-layer
-  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  esc  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
   _    @a-meta @s-meta @d-meta @f-meta g left down up right ; ' ret
   lsft @intl-double-ctrl z    x    c    v    b    n    m    ,    .    /    rsft
@@ -161,7 +161,7 @@
 )
 
 (deflayer delete-ops
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  @ops-esc XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   @dw  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   @ops-esc XX   XX   @dd  XX   XX   XX   XX   XX   XX   @d$  XX   XX
   XX   XX   XX   XX   XX   @db  XX   XX   XX   XX   XX   XX   XX
@@ -169,7 +169,7 @@
 )
 
 (deflayer yank-ops
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  @ops-esc XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   @yw  XX   XX   XX   @yy  XX   XX   XX   XX   XX   XX   XX
   @ops-esc XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   @yb  XX   XX   XX   XX   XX   XX   XX
@@ -177,7 +177,7 @@
 )
 
 (deflayer g-ops
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  @ops-esc XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   @ops-esc XX   XX   XX   XX   @gg  XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
