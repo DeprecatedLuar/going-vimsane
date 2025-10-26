@@ -24,9 +24,10 @@
   vshift lsft  ;; Virtual key to hold shift
   vimk (layer-switch vim-normal)
   def  (layer-switch default)
+  escaps (layer-switch escape)
   metl (multi lmet (layer-while-held meta-layer))
   safety (macro (on-press release-vkey vshift) 10)
-  
+
 )
 
 ;; ============ ALIASES ============
@@ -52,6 +53,12 @@
   s^ (tap-hold 200 250 s lalt)
   l^ (tap-hold 200 300 l lalt)
 
+  ;; Meta-layer tap-hold for asdf
+  a-meta (tap-hold 110 110 a tab)
+  s-meta (tap-hold 110 110 s lalt)
+  d-meta (tap-hold 110 110 d lsft)
+  f-meta (tap-hold 110 110 f lctl)
+
   ctrl-exit (multi lctl @def)
 
 
@@ -66,6 +73,13 @@
 
   vcp (macro (on-press release-vkey vshift) 10 C-c 10 (on-press tap-vkey vimk) left)
   vcut (macro (on-press release-vkey vshift) 10 C-x 10 (on-press tap-vkey vimk))
+  vdel (macro (on-press release-vkey vshift) 10 del 10 (on-press tap-vkey vimk))
+
+  ;; Visual mode caps lock handling (releases vshift, deselects, then switches layer)
+  vdef (macro (on-press release-vkey vshift) 10 left 10 (on-press tap-vkey def))
+  vescaps (macro (on-press release-vkey vshift) 10 left 10 (on-press tap-vkey escaps))
+  vmeta (multi (on-press release-vkey vshift) @meta)
+  vcaps (tap-hold-press $Tt $Ht (tap-dance $Ht (@vdef @vescaps)) @vmeta)
 
   fnd (macro C-f 10 (on-press tap-vkey def))
 
@@ -123,11 +137,11 @@
 )
 
 (deflayer visual-mode
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @vdel
   XX   XX   XX   XX   XX   XX   @vcp  XX   XX   XX   XX   XX   XX   XX
-  @pac XX   XX  @vcut XX   XX   S-left S-down S-up S-right XX   XX   ret
-  XX   XX   XX   XX   XX   @vexit XX   XX   XX   XX   XX   XX   XX
-  XX   @cap XX              XX              XX   @cap XX
+  @vcaps XX   XX  @vcut XX   XX   S-left S-down S-up S-right XX   XX   ret
+  XX   XX   XX   @vdel XX   @vexit XX   XX   XX   XX   XX   XX   XX
+  XX   @vcaps XX              XX              XX   @vcaps XX
 )
 
 (deflayer escape
@@ -141,7 +155,7 @@
 (deflayer meta-layer
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
-  _    a  lalt lsft lctl    g    left down up   right ;    '    ret
+  _    @a-meta @s-meta @d-meta @f-meta g left down up right ; ' ret
   lsft @intl-double-ctrl z    x    c    v    b    n    m    ,    .    /    rsft
   lctl _    lalt           spc            ralt _    rctl
 )
