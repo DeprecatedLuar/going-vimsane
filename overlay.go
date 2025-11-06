@@ -34,6 +34,8 @@ var (
 	Yellow  = Color{R: 1.0, G: 1.0, B: 0.3}
 	Cyan    = Color{R: 0.3, G: 1.0, B: 1.0}
 	Purple  = Color{R: 0.6, G: 0.3, B: 1.0}
+	Orange  = Color{R: 1.0, G: 0.6, B: 0.2}
+	Pink    = Color{R: 1.0, G: 0.5, B: 0.8}
 )
 
 var (

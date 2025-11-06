@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
 type Message struct {
@@ -25,7 +26,9 @@ func getColorForLayer(layer string) Color {
 	case "visual-mode":
 		return Magenta
 	case "vim-shifted":
-		return Green
+		return Orange
+	case "visual-shifted":
+		return Orange
 	case "delete-ops":
 		return Red
 	case "yank-ops":
@@ -59,40 +62,46 @@ func main() {
 		os.Exit(0)
 	}()
 
-	// Connect to kanata
-	conn, err := net.Dial("tcp", "127.0.0.1:5829")
-	if err != nil {
-		fmt.Printf("Can't connect to kanata: %v\n", err)
-		fmt.Println("Make sure kanata is running with --port 5829")
-		os.Exit(1)
-	}
-	defer conn.Close()
+	for {
+		// Connect to kanata
+		conn, err := net.Dial("tcp", "127.0.0.1:5829")
+		if err != nil {
+			fmt.Printf("Can't connect to kanata: %v\n", err)
+			fmt.Println("Retrying in 5 seconds...")
+			time.Sleep(5 * time.Second)
+			continue
+		}
 
-	fmt.Println("Connected to kanata tcp")
+		fmt.Println("Connected to kanata tcp")
 
-	// Monitor layer changes
-	scanner := bufio.NewScanner(conn)
-	for scanner.Scan() {
-		var msg Message
-		if err := json.Unmarshal(scanner.Bytes(), &msg); err == nil {
-			if msg.LayerChange.New != "" {
-				layer := msg.LayerChange.New
+		// Monitor layer changes
+		scanner := bufio.NewScanner(conn)
+		for scanner.Scan() {
+			var msg Message
+			if err := json.Unmarshal(scanner.Bytes(), &msg); err == nil {
+				if msg.LayerChange.New != "" {
+					layer := msg.LayerChange.New
 
-				if layer == "default" || layer == "meta-layer" {
-					fmt.Printf("Layer: %-15s → Hidden\n", layer)
-					HideWindow()
-				} else {
-					color := getColorForLayer(layer)
-					fmt.Printf("Layer: %-15s → Color: RGB(%.1f, %.1f, %.1f)\n",
-						layer, color.R, color.G, color.B)
-					ShowWindow()
-					DrawBorder(color, BorderWidth)
+					if layer == "default" || layer == "meta-layer" {
+						fmt.Printf("Layer: %-15s → Hidden\n", layer)
+						HideWindow()
+					} else {
+						color := getColorForLayer(layer)
+						fmt.Printf("Layer: %-15s → Color: RGB(%.1f, %.1f, %.1f)\n",
+							layer, color.R, color.G, color.B)
+						ShowWindow()
+						DrawBorder(color, BorderWidth)
+					}
 				}
 			}
 		}
-	}
 
-	if err := scanner.Err(); err != nil {
-		fmt.Printf("Error reading from kanata: %v\n", err)
+		if err := scanner.Err(); err != nil {
+			fmt.Printf("Error reading from kanata: %v\n", err)
+		}
+
+		conn.Close()
+		fmt.Println("Connection lost. Retrying in 5 seconds...")
+		time.Sleep(5 * time.Second)
 	}
 }

@@ -1,0 +1,12 @@
+[Unit]
+Description=Borderline LSD - X11 border overlay for kanata layers
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/home/luar/Workspace/projects/system/going-vimsane/borderline-lsd
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

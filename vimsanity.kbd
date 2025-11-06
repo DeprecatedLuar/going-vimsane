@@ -40,6 +40,10 @@
   escaps (layer-switch escape)
   meta (multi (on-press tap-vkey safety) (on-release tap-vkey def) lmet (layer-while-held meta-layer))
   vsft (layer-while-held vim-shifted)
+  vvsft (layer-while-held visual-shifted)
+  dopsft (layer-while-held delete-ops-shifted)
+  yopsft (layer-while-held yank-ops-shifted)
+  gopsft (layer-while-held g-ops-shifted)
 
   cap (tap-hold-press $Tt $Ht (tap-dance $Ht (@vimn @escaps)) @meta) ;; Caps Lock: single tap for vim-normal, double tap for escape, hold for meta-layer
   pac (tap-hold-press $Tt $Ht (tap-dance $Ht (@def @escaps))  @meta)
@@ -94,13 +98,30 @@
   dd (macro spc 5  home S-end del 10 bspc 5 home (on-press tap-vkey vimk))
   d$ (macro S-end del (on-press tap-vkey vimk))
 
+  ;; Delete shifted operations (execute + return to vim-normal)
+  d0 (macro S-home del (on-press tap-vkey vimk))
+  dW (macro S-C-right del (on-press tap-vkey vimk))
+  dB (macro S-C-left del (on-press tap-vkey vimk))
+  dL (macro S-end del (on-press tap-vkey vimk))
+  dH (macro S-home del (on-press tap-vkey vimk))
+
   ;; Yank operations (execute + return to vim-normal)
   yw (macro C-S-right C-c left (on-press tap-vkey vimk))
   yb (macro C-S-left C-c right (on-press tap-vkey vimk))
   yy (macro home S-end C-c left (on-press tap-vkey vimk))
 
+  ;; Yank shifted operations (execute + return to vim-normal)
+  y0 (macro S-home C-c right (on-press tap-vkey vimk))
+  yW (macro S-C-right C-c left (on-press tap-vkey vimk))
+  yB (macro S-C-left C-c right (on-press tap-vkey vimk))
+  yL (macro S-end C-c left (on-press tap-vkey vimk))
+  yH (macro S-home C-c right (on-press tap-vkey vimk))
+
   ;; G operations (execute + return to vim-normal)
   gg (macro C-home (on-press tap-vkey vimk))
+
+  ;; G shifted operations (execute + return to vim-normal)
+  gG (macro C-end (on-press tap-vkey vimk))
 
   ;; Escape from ops layers
   ops-esc (layer-switch vim-normal)
@@ -131,7 +152,7 @@
 (deflayer vim-shifted
   @ops-esc XX   XX   XX   XX   end  XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   @D   XX   C-end   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   @D   XX   C-end   home   XX   XX   end   XX   XX   XX
   _    XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   _
   XX   XX   XX              XX              XX   XX   XX
 )
@@ -140,7 +161,7 @@
   @vexit XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @vdel
   XX   XX   XX   XX   XX   XX   @vcp  XX   XX   XX   XX   XX   XX   XX
   @vcaps XX   XX  @vcut XX   XX   S-left S-down S-up S-right XX   XX   ret
-  XX   XX   XX   @vdel XX   @vexit XX   XX   XX   XX   XX   XX   XX
+  @vvsft   XX   XX   @vdel XX   @vexit XX   XX   XX   XX   XX   XX   @vvsft
   XX   @vcaps XX              XX              XX   @vcaps XX
 )
 
@@ -164,7 +185,7 @@
   @ops-esc XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   @dw  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   @ops-esc XX   XX   @dd  XX   XX   XX   XX   XX   XX   @d$  XX   XX
-  XX   XX   XX   XX   XX   @db  XX   XX   XX   XX   XX   XX   XX
+  @dopsft   XX   XX   XX   XX   @db  XX   XX   XX   XX   XX   XX   @dopsft
   XX   XX   XX              XX              XX   XX   XX
 )
 
@@ -172,7 +193,7 @@
   @ops-esc XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   @yw  XX   XX   XX   @yy  XX   XX   XX   XX   XX   XX   XX
   @ops-esc XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   @yb  XX   XX   XX   XX   XX   XX   XX
+  @yopsft   XX   XX   XX   XX   @yb  XX   XX   XX   XX   XX   XX   @yopsft
   XX   XX   XX              XX              XX   XX   XX
 )
 
@@ -180,6 +201,38 @@
   @ops-esc XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   @ops-esc XX   XX   XX   XX   @gg  XX   XX   XX   XX   XX   XX   XX
-  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  @gopsft   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @gopsft
   XX   XX   XX              XX              XX   XX   XX
+)
+
+(deflayer delete-ops-shifted
+  @ops-esc @d0  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   @dW  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  @ops-esc XX   XX   XX   XX   XX   @dH  XX   XX   @dL  XX   XX   XX
+  _    XX   XX   XX   XX   @dB  XX   XX   XX   XX   XX   XX   _
+  XX   XX   XX              XX              XX   XX   XX
+)
+
+(deflayer yank-ops-shifted
+  @ops-esc @y0  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   @yW  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  @ops-esc XX   XX   XX   XX   XX   @yH  XX   XX   @yL  XX   XX   XX
+  _    XX   XX   XX   XX   @yB  XX   XX   XX   XX   XX   XX   _
+  XX   XX   XX              XX              XX   XX   XX
+)
+
+(deflayer g-ops-shifted
+  @ops-esc XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  @ops-esc XX   XX   XX   XX   @gG  XX   XX   XX   XX   XX   XX   XX
+  _    XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   _
+  XX   XX   XX              XX              XX   XX   XX
+)
+
+(deflayer visual-shifted
+  @vexit XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @vdel
+  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
+  @vcaps XX   XX   XX   XX   XX   S-home   XX   XX   S-end   XX   XX   ret
+  _    XX   XX   @vdel XX   @vexit XX   XX   XX   XX   XX   XX   _
+  XX   @vcaps XX              XX              XX   @vcaps XX
 )
