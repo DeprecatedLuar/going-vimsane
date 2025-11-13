@@ -82,7 +82,7 @@ func main() {
 				if msg.LayerChange.New != "" {
 					layer := msg.LayerChange.New
 
-					if layer == "default" || layer == "meta-layer" {
+					if layer == "default" || layer == "meta-layer" || layer == "escape" || layer == "layer-selection" || layer == "arrow" {
 						fmt.Printf("Layer: %-15s → Hidden\n", layer)
 						HideWindow()
 					} else {
