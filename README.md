@@ -1,5 +1,7 @@
 # going-vimsane
 
+## This project is still under construction and beign updated based on my usage needs, still expeimental but highly functional. No install scripts yet sorry
+
 Visual X11 overlay that shows colored borders when switching between kanata keyboard layers. Works with the included `vimsanity.kbd` config for vim-like keyboard navigation.
 
 ## Requirements
