@@ -10,7 +10,7 @@
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
   caps a    s    d    f    g    h    j    k    l    ;    '    ret
-  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lsft 102d z    x    c    v    b    n    m    ,    .    /    rsft
   lctl lmet lalt           spc            ralt rmet rctl
 )
 
@@ -43,6 +43,8 @@
   dopsft (layer-while-held delete-ops-shifted)
   yopsft (layer-while-held yank-ops-shifted)
   gopsft (layer-while-held g-ops-shifted)
+
+  key102 f15
 
   cap (tap-hold-press $Tt $Ht (tap-dance $Ht (@vimn @escaps)) @meta) ;; Caps Lock: single tap for vim-normal, double tap for escape, hold for meta-layer
   pac (tap-hold-press $Tt $Ht (tap-dance $Ht (@def @escaps))  @meta)
@@ -138,7 +140,7 @@
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
   @cap @a^  @s^  @d^  @f^  g    h    @j^  @k^  @l^  ;    '    ret
-  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lsft @key102 z    x    c    v    b    n    m    ,    .    /    rsft
   lctl @super-exit lalt           spc            ralt @super-exit rctl
 )
 
@@ -147,7 +149,7 @@
   XX   1    2    3    XX   5    6    7    8    9    0    XX   XX   bspc
   XX   XX   C-right XX   XX   XX   @y  C-z  @insert-exit XX   C-v  [    ]    XX
   @pac XX   XX   @d  XX   @g   left down up right XX   '    ret
-  @vsft XX   del  XX   @vis C-left   C-g  XX   XX   XX   @fnd  @vsft
+  @vsft @key102 XX   del  XX   @vis C-left   C-g  XX   XX   XX   @fnd  @vsft
   @ctrl-exit @super-exit lalt           spc            ralt @super-exit @ctrl-exit
 )
 
@@ -156,7 +158,7 @@
   XX   XX   XX   XX   XX   end  XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   @D   XX   C-end   home   XX   XX   end   XX   XX   XX
-  _    XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   _
+  _    @key102 XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   _
   XX   XX   XX              XX              XX   XX   XX
 )
 
@@ -165,7 +167,7 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @vdel
   XX   XX   XX   XX   XX   XX   @vcp  XX   XX   XX   XX   XX   XX   XX
   @vcaps XX   XX  @vcut XX   XX   S-left S-down S-up S-right XX   XX   ret
-  @vvsft   XX   @vdel XX   @vexit XX   XX   XX   XX   XX   XX   @vvsft
+  @vvsft @key102 XX   @vdel XX   @vexit XX   XX   XX   XX   XX   XX   @vvsft
   XX   @vcaps XX              XX              XX   @vcaps XX
 )
 
@@ -174,7 +176,7 @@
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   @cap-esc _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _
+  _    @key102 _    _    _    _    _    _    _    _    _    _    _
   _    _    _              _              _    _    _
 )
 
@@ -183,7 +185,7 @@
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
   _    @a-meta @s-meta @d-meta @f-meta g left down up right ; ' ret
-  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lsft @key102 z    x    c    v    b    n    m    ,    .    /    rsft
   lctl _    lalt           spc            ralt _    rctl
 )
 
@@ -192,7 +194,7 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   @dw  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   @ops-esc XX   XX   @dd  XX   XX   XX   XX   XX   XX   @d$  XX   XX
-  @dopsft   XX   XX   XX   @db  XX   XX   XX   XX   XX   XX   @dopsft
+  @dopsft @key102 XX   XX   XX   @db  XX   XX   XX   XX   XX   XX   @dopsft
   XX   XX   XX              XX              XX   XX   XX
 )
 
@@ -201,7 +203,7 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   @yw  XX   XX   XX   @yy  XX   XX   XX   XX   XX   XX   XX
   @ops-esc XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
-  @yopsft   XX   XX   XX   @yb  XX   XX   XX   XX   XX   XX   @yopsft
+  @yopsft @key102 XX   XX   XX   @yb  XX   XX   XX   XX   XX   XX   @yopsft
   XX   XX   XX              XX              XX   XX   XX
 )
 
@@ -210,7 +212,7 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   @ops-esc XX   XX   XX   XX   @gg  XX   XX   XX   XX   XX   XX   XX
-  @gopsft   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @gopsft
+  @gopsft @key102 XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   @gopsft
   XX   XX   XX              XX              XX   XX   XX
 )
 
@@ -219,7 +221,7 @@
   XX   @d0  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   @dW  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   @ops-esc XX   XX   XX   XX   XX   @dH  XX   XX   @dL  XX   XX   XX
-  _    XX   XX   XX   @dB  XX   XX   XX   XX   XX   XX   _
+  _    @key102 XX   XX   XX   @dB  XX   XX   XX   XX   XX   XX   _
   XX   XX   XX              XX              XX   XX   XX
 )
 
@@ -228,7 +230,7 @@
   XX   @y0  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   @yW  XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   @ops-esc XX   XX   XX   XX   XX   @yH  XX   XX   @yL  XX   XX   XX
-  _    XX   XX   XX   @yB  XX   XX   XX   XX   XX   XX   _
+  _    @key102 XX   XX   XX   @yB  XX   XX   XX   XX   XX   XX   _
   XX   XX   XX              XX              XX   XX   XX
 )
 
@@ -237,7 +239,7 @@
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   @ops-esc XX   XX   XX   XX   @gG  XX   XX   XX   XX   XX   XX   XX
-  _    XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   _
+  _    @key102 XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   _
   XX   XX   XX              XX              XX   XX   XX
 )
 
@@ -246,6 +248,6 @@
   XX   XX   XX   XX   S-end   XX   XX   XX   XX   XX   XX   XX   XX   @vdel
   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
   @vcaps XX   XX   XX   XX   XX   S-home   XX   XX   S-end   XX   XX   ret
-  _    XX   @vdel XX   @vexit XX   XX   XX   XX   XX   XX   _
+  _    @key102 XX   @vdel XX   @vexit XX   XX   XX   XX   XX   XX   _
   XX   @vcaps XX              XX              XX   @vcaps XX
 )
