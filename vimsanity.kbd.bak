@@ -1,32 +1,29 @@
-;; ============ STANDALONE BOILERPLATE ============
-;; Uncomment below to run vimsanity.kbd directly.
-;; When included from wm.kbd, keep these commented out.
+(defcfg
+  process-unmapped-keys yes
+  log-layer-changes yes
+  linux-device-detect-mode keyboard-only
+)
 
-;; (defcfg
-;;   process-unmapped-keys yes
-;;   log-layer-changes yes
-;;   linux-device-detect-mode keyboard-only
-;;   tcp-server-port 5828
-;; )
+(defoverrides
+  (lctl caps) (caps)
+  (rctl caps) (caps)
+)
 
-;; (defoverrides
-;;   (lctl caps) (caps)
-;;   (rctl caps) (caps)
-;; )
+;; ============ SOURCE ============
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft 102d z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rmet rctl
+)
 
-;; (defsrc
-;;   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
-;;   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
-;;   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
-;;   caps a    s    d    f    g    h    j    k    l    ;    '    ret
-;;   lsft 102d z    x    c    v    b    n    m    ,    .    /    rsft
-;;   lctl lmet lalt           spc            ralt rmet rctl
-;; )
-
-;; (defvar
-;;   Tt 200 ;; tap time
-;;   Ht 200 ;; hold time
-;; )
+;; ============ VARIABLES ============
+(defvar
+  Tt 200 ;; tap time
+  Ht 200 ;; hold time
+)
 
 ;; ============ FAKE KEYS ============
 (deffakekeys
@@ -34,6 +31,9 @@
   vimk (layer-switch vim-normal)
   def  (layer-switch default)
   escaps (layer-switch escape)
+  metl (multi lmet (layer-while-held meta-layer))
+  safety (macro (on-press release-vkey vshift) 10)
+
 )
 
 ;; ============ ALIASES ============
@@ -41,23 +41,45 @@
   vimn (layer-switch vim-normal)
   def (layer-switch default)
   escaps (layer-switch escape)
+  meta (multi (on-press tap-vkey safety) (on-release tap-vkey def) lmet (layer-while-held meta-layer))
+  meta2 (multi (on-press tap-vkey safety) (on-release tap-vkey escaps) lmet (layer-while-held meta-layer))
   vsft (layer-while-held vim-shifted)
   vvsft (layer-while-held visual-shifted)
   dopsft (layer-while-held delete-ops-shifted)
   yopsft (layer-while-held yank-ops-shifted)
-  gopsft (layer-while-held g-ops-shifted)
+  gopsft (layer-while-held g-ops-shifted) 
 
-  cap (tap-hold-press $Tt $Ht (tap-dance $Ht (@vimn @escaps)) lmet)
-  pac (tap-hold-press $Tt $Ht (tap-dance $Ht (@def @escaps)) lmet)
-  cap-esc (tap-hold-press $Tt $Ht (tap-dance $Ht (esc @def)) lmet)
+  cap (tap-hold-press $Tt $Ht (tap-dance $Ht (@vimn @escaps)) @meta) ;; Caps Lock: single tap for vim-normal, double tap for escape, hold for meta-layer
+  pac (tap-hold-press $Tt $Ht (tap-dance $Ht (@def @escaps))  @meta)
+  cap-esc (tap-hold-press $Tt $Ht (tap-dance $Ht (esc @def)) @meta2) ;; Caps Lock on escape layer: single tap = esc, double tap = default, hold = meta2 (returns to escape)
+
+  ;; Direct modifiers (no layers)
+  a^ a
+  f^ (tap-hold 200 250 f lctl)
+  j^ (tap-hold 200 300 j lctl)
+  d^ (tap-hold 200 250 d lsft)
+  k^ (tap-hold 200 300 k lsft)
+  s^ (tap-hold 200 250 s lalt)
+  l^ (tap-hold 200 300 l lalt)
+
+  ;; Meta-layer tap-hold for asdf
+  a-meta a
+  s-meta (tap-hold 110 110 s lalt)
+  d-meta (tap-hold 110 110 d lsft)
+  f-meta (tap-hold 110 110 f lctl)
 
   ctrl-exit (multi lctl @def)
 
+
   vis (multi (layer-switch visual-mode) (on-press press-vkey vshift))   ;; Visual mode: switch layer + hold shift
 
-  vexit (macro (on-press tap-vkey vimk) 10 (on-press release-vkey vshift) 10 left)   ;; Exit visual mode: release shift + switch to vim-normal + press left
+
+  
+  vexit (macro (on-press tap-vkey vimk) 10 (on-press release-vkey vshift) 10 left)   ;; Exit visual mode: release shift + switch to vim-normal + press left   
 
   insert-exit @def
+  super-exit (multi lmet @def)
+
   vcp (macro (on-press release-vkey vshift) 10 C-c 10 (on-press tap-vkey vimk) left)
   vcut (macro (on-press release-vkey vshift) 10 C-x 10 (on-press tap-vkey vimk))
   vdel (macro (on-press release-vkey vshift) 10 del 10 (on-press tap-vkey vimk))
@@ -66,7 +88,7 @@
   ;; Visual mode caps lock handling (releases vshift, deselects, then switches layer)
   vdef (macro (on-press release-vkey vshift) 10 left 10 (on-press tap-vkey def))
   vescaps (macro (on-press release-vkey vshift) 10 left 10 (on-press tap-vkey escaps))
-  vmeta (multi (on-press release-vkey vshift) lmet)
+  vmeta (multi (on-press release-vkey vshift) @meta)
   vcaps (tap-hold-press $Tt $Ht (tap-dance $Ht (@vdef @vescaps)) @vmeta)
 
   fnd (macro C-f 10 (on-press tap-vkey def))
@@ -170,17 +192,20 @@
   I-ins  (macro home (on-press tap-vkey def))          ;; I: insert at line start
   chgend (macro S-end del (on-press tap-vkey def))     ;; C: change to end of line
   redo   C-S-z                                         ;; u (shifted): redo
+
+
+ 
 )
 
 ;; ============ LAYERS ============
-;; (deflayer default
-;;   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
-;;   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
-;;   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
-;;   @cap a    s    d    f    g    h    j    k    l    ;    '    ret
-;;   lsft 102d z    x    c    v    b    n    m    ,    .    /    rsft
-;;   lctl lmet lalt           spc            ralt lmet rctl
-;; )
+(deflayer default
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @cap @a^  @s^  @d^  @f^  g    h    @j^  @k^  @l^  ;    '    ret
+  lsft 102d z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl @super-exit lalt           spc            ralt @super-exit rctl
+)
 
 (deflayer vim-normal
   @def XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX   XX
@@ -188,7 +213,7 @@
   XX   XX   C-right XX   @r   XX   @y  C-z  @insert-exit @o  C-v  [    ]    XX
   @pac @app XX   @d  XX   @g   left down up right XX   '    ret
   @vsft 102d XX   del  XX   @vis C-left   C-g  XX   XX   XX   @fnd  @vsft
-  @ctrl-exit lmet lalt           spc            ralt lmet @ctrl-exit
+  @ctrl-exit @super-exit lalt           spc            ralt @super-exit @ctrl-exit
 )
 
 (deflayer vim-shifted
@@ -216,6 +241,15 @@
   @cap-esc _    _    _    _    _    _    _    _    _    _    _    _
   _    102d _    _    _    _    _    _    _    _    _    _    _
   _    _    _              _              _    _    _
+)
+
+(deflayer meta-layer
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  _    @a-meta @s-meta @d-meta @f-meta g left down up right ; ' ret
+  lsft 102d z    x    c    v    b    n    m    ,    .    /    caps
+  lctl _    lalt           spc            ralt _    rctl
 )
 
 (deflayer delete-ops
